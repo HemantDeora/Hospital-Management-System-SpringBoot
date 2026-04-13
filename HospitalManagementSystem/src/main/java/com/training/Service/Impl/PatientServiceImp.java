@@ -1,0 +1,74 @@
+package com.training.Service.Impl;
+
+import com.training.Dto.Patientdto;
+import com.training.Entity.Patient;
+import com.training.Repo.PatientRepo;
+import com.training.Service.PatientService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PatientServiceImp implements PatientService {
+
+    private final ModelMapper  modelMapper;
+    private  final PatientRepo patientRepo;
+
+    @Override
+    public List<Patientdto> getAllPatients() {
+        List<Patient> patient = patientRepo.findAll();
+        return patient.stream()
+                .map(p -> modelMapper.map(p, Patientdto.class))
+                .toList();
+    }
+
+    @Override
+    public Patientdto getPatientById(Long id) {
+        Patient patient = patientRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("id not found"));
+        return modelMapper.map(patient, Patientdto.class);
+    }
+
+    @Override
+    public Patientdto savePatient(Patientdto patientdto) {
+        Patient patient = modelMapper.map(patientdto, Patient.class);
+        Patient saved =  patientRepo.save(patient);
+        return modelMapper.map(saved, Patientdto.class);
+    }
+
+    @Override
+    public void deletePatient(Long id) {
+       if (!patientRepo.existsById(id)) {
+           throw new RuntimeException("Patient not found with id: " + id);
+       }else
+           patientRepo.deleteById(id);
+    }
+
+    @Override
+    public Patientdto updatePatient(Long id, Patientdto patientdto) {
+        Patient patient = patientRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("id not found"));
+        patient.setFirstName(patientdto.getFirstName());
+        patient.setLastName(patientdto.getLastName());
+        patient.setDob(patientdto.getDob());
+        patient.setAddress(patientdto.getAddress());
+        patient.setGender(patientdto.getGender());
+        Patient saved  =  patientRepo.save(patient);
+        return modelMapper.map(saved, Patientdto.class);
+    }
+
+    @Override
+    public Patientdto updatePatientPartial(Long id, Patientdto patientdto) {
+        Patient patient = patientRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        modelMapper.map(patientdto, patient);
+
+        Patient updated = patientRepo.save(patient);
+
+        return modelMapper.map(updated, Patientdto.class);
+    }
+
+
+}
