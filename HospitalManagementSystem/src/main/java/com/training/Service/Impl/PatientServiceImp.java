@@ -2,6 +2,7 @@ package com.training.Service.Impl;
 
 import com.training.Dto.Patientdto;
 import com.training.Entity.Patient;
+import com.training.Exception.ResourceNotFoundException;
 import com.training.Repo.PatientRepo;
 import com.training.Service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class PatientServiceImp implements PatientService {
     @Override
     public void deletePatient(Long id) {
        if (!patientRepo.existsById(id)) {
-           throw new RuntimeException("Patient not found with id: " + id);
+           throw new ResourceNotFoundException("Patient not found");
        }else
            patientRepo.deleteById(id);
     }
@@ -61,7 +62,7 @@ public class PatientServiceImp implements PatientService {
     @Override
     public Patientdto updatePatientPartial(Long id, Patientdto patientdto) {
         Patient patient = patientRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+                .orElseThrow(() -> new  ResourceNotFoundException("Patient not found"));
 
         modelMapper.map(patientdto, patient);
 
