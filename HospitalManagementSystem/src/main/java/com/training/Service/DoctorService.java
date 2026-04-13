@@ -17,4 +17,6 @@ public interface DoctorService {
     DoctorDto patchDoctor(Long id, DoctorDto doctorDto);
 
     void deleteDoctor(Long id);
+
+    List<DoctorDto> searchDoctors(String firstName);
 }

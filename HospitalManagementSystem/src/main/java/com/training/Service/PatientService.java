@@ -16,4 +16,6 @@ public interface PatientService {
     Patientdto updatePatient(Long id, Patientdto patientdto);
 
     Patientdto updatePatientPartial(Long id, Patientdto patientdto);
+
+    List<Patientdto> searchPatients(String firstName);
 }

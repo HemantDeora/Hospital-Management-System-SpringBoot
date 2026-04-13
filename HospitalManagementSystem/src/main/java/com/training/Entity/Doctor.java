@@ -7,7 +7,13 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "doctors")
+@Table(
+        name = "doctors",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "unique_doctor_email", columnNames = {"email"}),
+                @UniqueConstraint(name = "unique_doctor_phone", columnNames = {"phone"})
+        }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,13 +24,13 @@ public class Doctor {
     private Long id;
 
     @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 50, message = "First name must be between 2 to 50 characters")
-    @Column(nullable = false)
+    @Size(min = 2, max = 50)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 50, message = "Last name must be between 2 to 50 characters")
-    @Column(nullable = false)
+    @Size(min = 2, max = 50)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @NotBlank(message = "Specialization is required")
@@ -33,7 +39,7 @@ public class Doctor {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @NotBlank(message = "Phone number is required")

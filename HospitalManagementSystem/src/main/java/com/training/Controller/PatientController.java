@@ -27,6 +27,11 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Patientdto>> searchPatients(@RequestParam String firstName){
+        return ResponseEntity.ok(patientService.searchPatients(firstName));
+    }
+
     @PostMapping
     public ResponseEntity<Patientdto> savePatient(
             @Valid @RequestBody Patientdto patientdto){

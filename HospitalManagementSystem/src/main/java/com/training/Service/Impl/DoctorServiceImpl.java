@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -67,5 +68,14 @@ public class DoctorServiceImpl implements DoctorService {
             throw new RuntimeException("Doctor not found with id: " + id);
         }
         doctorRepo.deleteById(id);
+    }
+
+    @Override
+    public List<DoctorDto> searchDoctors(String firstName) {
+        List<Doctor> doctors = doctorRepo.findByFirstName(firstName);
+        return doctors.stream()
+                .map(d -> modelMapper.map(d, DoctorDto.class))
+                .toList();
+
     }
 }

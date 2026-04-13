@@ -71,5 +71,14 @@ public class PatientServiceImp implements PatientService {
         return modelMapper.map(updated, Patientdto.class);
     }
 
+    @Override
+    public List<Patientdto> searchPatients(String firstName) {
+        List<Patient> patients = patientRepo.findByFirstName(firstName);
+        return patients.stream()
+                .map(p -> modelMapper.map(p, Patientdto.class))
+                .toList();
+
+    }
+
 
 }

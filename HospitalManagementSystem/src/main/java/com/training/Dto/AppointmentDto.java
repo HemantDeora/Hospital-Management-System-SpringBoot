@@ -1,5 +1,6 @@
 package com.training.Dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ public class AppointmentDto {
 
     @NotNull(message = "Appointment date is required")
     @Future(message = "Appointment date must be in the future")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime appointmentDate;
 
     @NotBlank(message = "Reason is required")
@@ -21,13 +23,17 @@ public class AppointmentDto {
     private String reason;
 
     @NotBlank(message = "Status is required")
-    @Pattern(regexp = "Scheduled|Pending|Completed|Cancelled",
-            message = "Status must be Scheduled, Pending, Completed or Cancelled")
+    @Pattern(
+            regexp = "Scheduled|Pending|Completed|Cancelled",
+            message = "Status must be Scheduled, Pending, Completed or Cancelled"
+    )
     private String status;
 
     @NotNull(message = "Patient ID is required")
+    @Positive(message = "Patient ID must be positive")
     private Long patientId;
 
     @NotNull(message = "Doctor ID is required")
+    @Positive(message = "Doctor ID must be positive")
     private Long doctorId;
 }

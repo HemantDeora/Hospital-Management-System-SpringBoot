@@ -27,6 +27,11 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.getDoctorById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<DoctorDto>> searchDoctors(@RequestParam String firstName) {
+        return ResponseEntity.ok(doctorService.searchDoctors(firstName));
+    }
+
     @PostMapping
     public ResponseEntity<DoctorDto> createDoctor(
             @Valid @RequestBody DoctorDto doctorDto) {
