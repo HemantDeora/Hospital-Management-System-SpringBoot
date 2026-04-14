@@ -52,4 +52,7 @@ public class Patient {
     @Email(message = "Invalid email format")
     @Column(nullable = false)
     private String email;
+
+    @OneToOne(mappedBy = "patient")
+    private Insurance insurance;
 }
