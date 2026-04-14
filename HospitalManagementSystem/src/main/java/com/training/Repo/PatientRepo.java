@@ -12,4 +12,6 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
 
     @Query("SELECT p FROM Patient p WHERE p.firstName = :firstName")
     public List<Patient> findByFirstName(String firstName);
+
+    long countByGender(String gender);
 }

@@ -7,5 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentRepo extends JpaRepository<Appointment, Long> {
+    long countByStatus(String status);
 
+    long countByAppointmentDateBetween(LocalDateTime start, LocalDateTime end);
 }
