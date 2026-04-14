@@ -6,9 +6,12 @@ import com.training.Repo.DoctorRepo;
 import com.training.Service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -19,9 +22,20 @@ public class DoctorServiceImpl implements DoctorService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<DoctorDto> getAllDoctors() {
-        return doctorRepo.findAll()
-                .stream()
+    public List<DoctorDto> getAllDoctors(Integer page, Integer size) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("firstName").ascending()
+        );
+
+        Page<Doctor> doctors = doctorRepo.findAll(pageable);
+
+        List<Doctor>  doctorList = doctors.getContent();
+
+
+        return doctorList.stream()
                 .map(d -> modelMapper.map(d, DoctorDto.class))
                 .toList();
     }

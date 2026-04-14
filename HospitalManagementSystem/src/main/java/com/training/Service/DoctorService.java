@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DoctorService {
 
-    List<DoctorDto> getAllDoctors();
+    List<DoctorDto> getAllDoctors(Integer page, Integer size);
 
     DoctorDto getDoctorById(Long id);
 
@@ -19,4 +19,6 @@ public interface DoctorService {
     void deleteDoctor(Long id);
 
     List<DoctorDto> searchDoctors(String firstName);
+
+
 }

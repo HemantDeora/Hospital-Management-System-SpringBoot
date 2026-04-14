@@ -9,7 +9,12 @@ import com.training.Repo.DoctorRepo;
 import com.training.Repo.PatientRepo;
 import com.training.Service.AppointmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -43,8 +48,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDto> getAllAppointments() {
-        return appointmentRepo.findAll()
+    public List<AppointmentDto> getAllAppointments(Integer page, Integer size) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("appointmentDate").ascending()
+        );
+
+        Page<Appointment> appointments = appointmentRepo.findAll(pageable);
+
+        List<Appointment> appointmentList = appointments.getContent();
+
+
+        return appointmentList
                 .stream()
                 .map(this::mapToDto)
                 .toList();

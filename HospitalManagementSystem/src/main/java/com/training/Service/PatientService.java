@@ -5,7 +5,7 @@ import com.training.Dto.Patientdto;
 import java.util.List;
 
 public interface PatientService {
-    List<Patientdto> getAllPatients();
+    List<Patientdto> getAllPatients(Integer pageNumber, Integer pageSize);
 
     Patientdto getPatientById(Long id);
 

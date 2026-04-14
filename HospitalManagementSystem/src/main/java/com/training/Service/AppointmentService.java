@@ -8,7 +8,7 @@ public interface AppointmentService {
 
     AppointmentDto createAppointment(AppointmentDto dto);
 
-    List<AppointmentDto> getAllAppointments();
+    List<AppointmentDto> getAllAppointments(Integer page, Integer size);
 
     AppointmentDto getAppointmentById(Long id);
 

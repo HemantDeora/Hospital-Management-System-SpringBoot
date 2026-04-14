@@ -26,8 +26,11 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentDto>> getAll() {
-        return ResponseEntity.ok(service.getAllAppointments());
+    public ResponseEntity<List<AppointmentDto>> getAll(
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "5", required = false) Integer size
+    ) {
+        return ResponseEntity.ok(service.getAllAppointments(page, size));
     }
 
     @GetMapping("/{id}")

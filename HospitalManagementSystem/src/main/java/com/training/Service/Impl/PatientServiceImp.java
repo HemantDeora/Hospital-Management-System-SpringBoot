@@ -7,7 +7,12 @@ import com.training.Repo.PatientRepo;
 import com.training.Service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -19,10 +24,17 @@ public class PatientServiceImp implements PatientService {
     private  final PatientRepo patientRepo;
 
     @Override
-    public List<Patientdto> getAllPatients() {
-        List<Patient> patient = patientRepo.findAll();
-        return patient.stream()
-                .map(p -> modelMapper.map(p, Patientdto.class))
+    public List<Patientdto> getAllPatients(Integer pageNumber, Integer pageSize) {
+
+        Pageable p = PageRequest.of(
+                pageNumber,
+                pageSize,
+                Sort.by("firstName").ascending()
+        );
+        Page<Patient> pagePost = patientRepo.findAll(p);
+        List<Patient> patientList = pagePost.getContent();
+        return patientList.stream()
+                .map(pat -> modelMapper.map(pat, Patientdto.class))
                 .toList();
     }
 
