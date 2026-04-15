@@ -30,7 +30,6 @@ public class Insurance {
     @NotNull
     private LocalDate validTo;
 
-    @OneToOne
-    @JoinColumn(name = "insurance_id", unique = true)
+    @OneToOne(mappedBy = "insurance")
     private Patient patient;
 }

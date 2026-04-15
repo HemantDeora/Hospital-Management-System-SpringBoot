@@ -53,6 +53,7 @@ public class Patient {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "patient")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_insurance", unique = true)
     private Insurance insurance;
 }
