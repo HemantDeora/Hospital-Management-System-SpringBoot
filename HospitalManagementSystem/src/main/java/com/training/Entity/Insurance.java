@@ -31,6 +31,6 @@ public class Insurance {
     private LocalDate validTo;
 
     @OneToOne
-    @JoinColumn(name = "patient_id", unique = true)
+    @JoinColumn(name = "insurance_id", unique = true)
     private Patient patient;
 }
