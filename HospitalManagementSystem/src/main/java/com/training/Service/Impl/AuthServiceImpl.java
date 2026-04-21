@@ -26,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
    public final AuthUtil authUtil;
     public final AuthenticationManager authenticationManager;
     public final UserRepository userRepository;
+    public final PasswordEncoder passwordEncoder;
 
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
@@ -44,16 +45,24 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public SignResponseDto signup(LoginRequestDto signRequestDto) {
 
-        User user = userRepository.findByUsername(signRequestDto.getUsername()).orElse(null);
         // 1. Check if user already exists
-        if (user != null) throw new IllegalArgumentException("User already exists");
-        // 2. Create new user
-        user = userRepository.save(builder()
-                .username(signRequestDto.getUsername())
-                .username(signRequestDto.getUsername())
-                .password(signRequestDto.getPassword()) // 🔐 important
-                .build());
+        User existingUser = userRepository
+                .findByUsername(signRequestDto.getUsername())
+                .orElse(null);
 
-        return new SignResponseDto();
+        if (existingUser != null) {
+            throw new IllegalArgumentException("User already exists");
+        }
+
+        // 2. Create new user
+        User user = User.builder()
+                .username(signRequestDto.getUsername())
+                .password(passwordEncoder.encode(signRequestDto.getPassword())) // 🔐 FIXED
+                .build();
+
+        user = userRepository.save(user);
+
+        // 3. Return response
+        return new SignResponseDto(user.getId(), user.getUsername());
     }
 }
