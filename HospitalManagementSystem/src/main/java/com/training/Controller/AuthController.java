@@ -2,6 +2,7 @@ package com.training.Controller;
 
 import com.training.Dto.LoginRequestDto;
 import com.training.Dto.LoginResponseDto;
+import com.training.Dto.SignResponseDto;
 import com.training.Service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +21,9 @@ public class AuthController {
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
          return ResponseEntity.ok(authService.login(loginRequestDto));
      }
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignResponseDto> signup(@RequestBody LoginRequestDto signRequestDto) {
+        return ResponseEntity.ok(authService.signup(signRequestDto));
+    }
 }
